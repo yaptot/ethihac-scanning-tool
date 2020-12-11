@@ -2,18 +2,48 @@ import os
 import sys
 import subprocess
 import time
-import platform
-import re
 import ipaddress
 from datetime import datetime
+import nmap3
+import json
+
+from nmap3.nmap3 import NmapScanTechniques
 
 startTime = time.time()
+nmap = nmap3.Nmap()
+port = 53
 
-def scanPortRange(startPort, endPort):
-    print(f'Port Number: {startPort} {endPort}')
+hostResults = []
 
-def scanPortSingle(startPort):
-    print(f'PortNumber: {startPort}')
+def scanPort(port):
+    print(f'Port Number: {port}')
+    nmap = NmapScanTechniques()
+    for host in hostResults:
+            tcpconn = nmap.nmap_tcp_scan(host["address"])
+            if host["address"] in tcpconn:
+                portList = tcpconn[host["address"]]["ports"]
+
+                host.update({"tcp_conn": "closed"})
+                for tempPort in portList:
+                    if tempPort["portid"] == str(port) and tempPort["state"] == "open":
+                        print("yay")
+                        host.update({"tcp_conn": "open"})
+            else:
+                host.update({"tcp_conn": "closed"})
+
+            tcpsyn = nmap.nmap_syn_scan(host["address"])
+            if host["address"] in tcpsyn:
+                portList = tcpsyn[host["address"]]["ports"]
+                host.update({"tcp_syn": "closed"})
+                for tempPort in portList:
+                    if tempPort["portid"] == str(port) and tempPort["state"] =="open":
+                        print("yay(1)")
+                        host.update({"tcp_syn: open"})
+            else:
+                host.update({"tcp_syn": "closed"})
+    
+    print(hostResults)
+            
 
 def validateIP(ip):
     def validNums(s):
@@ -25,29 +55,29 @@ def validateIP(ip):
     
     return False
     
-def pingSingle(host):
-    res = subprocess.call(['ping', '-c', '3', '-q', host])
-    if (res == 0): 
-            print( "Ping to", host, "OK") 
-    elif (res == 2): 
-        print("No response from", host) 
-    else: 
-        print("Ping to", host, "failed!")
+def pingSingle(host, port):
+    nmap = nmap3.NmapHostDiscovery()
+    result = nmap.nmap_no_portscan(host)
 
-def pingRange(startHost, endHost):
+    if host in result:
+        hostResults.append({'address': host, 'state': result[host]["state"]["state"]})
+        scanPort(port)
+
+def pingRange(startHost, endHost, port):
+    nmap = nmap3.NmapHostDiscovery()
     ipRange = int(ipaddress.IPv4Address(endHost)) - int(ipaddress.IPv4Address(startHost))
     print(ipRange)
     address = ipaddress.IPv4Address(startHost)
-    for ping in range(ipRange + 1):
-        res = subprocess.call(['ping', '-c', '3', '-q', str(address)]) 
-        if (res == 0): 
-            print( "Ping to", address, "OK") 
-        elif (res == 2): 
-            print("No response from", address) 
-        else: 
-            print("Ping to", address, "failed!")
+    for i in range(ipRange + 1):
+        result = nmap.nmap_no_portscan(str(address))
+        if str(address) in result: 
+            hostResults.append({'address':str(address), 'state': result[str(address)]["state"]["state"]})
+        else:
+            hostResults.append({'address':str(address), 'state': 'down'})
 
         address += 1
+
+    scanPort(port)
 
 if len(sys.argv) > 1:
     for i in sys.argv:
@@ -63,22 +93,11 @@ if len(sys.argv) > 1:
         elif(sys.argv[sys.argv.index(i)] == '-p'):
             if (sys.argv[sys.argv.index(i) + 1].isnumeric()): 
                 if(int(sys.argv[sys.argv.index(i) + 1]) >= 0 and int(sys.argv[sys.argv.index(i) + 1]) <= 65535):
-                    startPort = int(sys.argv[sys.argv.index(i) + 1])
-
-                    if(sys.argv.index(i) + 2 < len(sys.argv)): 
-                        if(sys.argv[sys.argv.index(i) + 2].isnumeric()):
-                            if(int(sys.argv[sys.argv.index(i) + 2]) >= 0 and int(sys.argv[sys.argv.index(i) + 2]) <= 65535 and int(sys.argv[sys.argv.index(i) + 2]) > startPort): 
-                                endPort = int(sys.argv[sys.argv.index(i) + 2])
-                                scanPortRange(startPort, endPort)
-                            else:
-                                scanPortSingle(startPort)
-                    else:
-                        scanPortSingle(startPort)
+                    port = int(sys.argv[sys.argv.index(i) + 1])
                 else:
-                    print("Invalid value for startPort")
-
+                    print("Invalid port number")
             else:
-                print("Invalid value for startPort")
+                print("Invalid port number")
         
         elif(sys.argv[sys.argv.index(i)] == 'host'):
             if(validateIP(sys.argv[sys.argv.index(i) + 1])):
@@ -87,11 +106,11 @@ if len(sys.argv) > 1:
                 if(sys.argv.index(i) + 2 < len(sys.argv)): 
                     if(validateIP(sys.argv[sys.argv.index(i) + 2])):
                         endHost = sys.argv[sys.argv.index(i) + 2]
-                        pingRange(startHost, endHost)
+                        pingRange(startHost, endHost, port)
                     else:
-                        pingSingle(startHost)
+                        pingSingle(startHost, port)
                 else:
-                    pingSingle(startHost)
+                    pingSingle(startHost, port)
             else:
                 print("Invalid startHost IP address")
         
