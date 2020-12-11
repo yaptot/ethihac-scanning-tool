@@ -38,11 +38,23 @@ def scanPort(port):
                 portList = tcpsyn[host["address"]]["ports"]
                 host.update({"tcp_syn": "closed"})
                 for tempPort in portList:
-                    if tempPort["portid"] == str(port) and tempPort["state"] =="open":
+                    if tempPort["portid"] == str(port) and tempPort["state"] == "open":
                         print("yay(1)")
                         host.update({"tcp_syn" : "open"})
             else:
                 host.update({"tcp_syn": "closed"})
+
+
+            tcpfin = nmap.nmap_fin_scan(host["address"])
+            if host["address"] in tcpfin:
+                portList = tcpfin[host["address"]]["ports"]
+                host.update({"tcp_fin" : "closed"})
+                for tempPort in portList:
+                    if tempPort["portid"] == str(port) and tempPort["state"] == "open":
+                        print("yay(2)")
+                        host.update({"tcp_fin" : "open"})
+            else:
+                host.update({"tcp_fin" : "closed"})
     
     print(hostResults)
             
