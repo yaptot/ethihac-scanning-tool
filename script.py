@@ -64,10 +64,21 @@ def scanPort(port):
                 host.update({"tcp_xmas" : "closed"})
                 for tempPort in portList:
                     if tempPort["portid"] == str(port):
-                        print("yay(2)")
+                        print("yay(3)")
                         host.update({"tcp_xmas" : tempPort["state"]})
             else:
                 host.update({"tcp_xmas" : "closed"})
+
+            tcpnull = nmaphd.nmap_portscan_only(host["address"], args="-sN")
+            if host["address"] in tcpnull:
+                portList = tcpnull[host["address"]]["ports"]
+                host.update({"tcp_null" : "closed"})
+                for tempPort in portList:
+                    if tempPort["portid"] == str(port):
+                        print("yay(4)")
+                        host.update({"tcp_null" : tempPort["state"]})
+            else:
+                host.update({"tcp_null" : "closed"})
     
     print(hostResults)
             
