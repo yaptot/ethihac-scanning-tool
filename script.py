@@ -7,7 +7,7 @@ from datetime import datetime
 import nmap3
 import json
 
-from nmap3.nmap3 import NmapScanTechniques
+from nmap3.nmap3 import NmapHostDiscovery, NmapScanTechniques
 
 startTime = time.time()
 nmap = nmap3.Nmap()
@@ -20,6 +20,8 @@ hostResults = []
 def scanPort(port):
     print(f'Port Number: {port}')
     nmap = NmapScanTechniques()
+    nmaphd = NmapHostDiscovery()
+
     for host in hostResults:
             tcpconn = nmap.nmap_tcp_scan(host["address"])
             if host["address"] in tcpconn:
@@ -44,7 +46,6 @@ def scanPort(port):
             else:
                 host.update({"tcp_syn": "closed"})
 
-
             tcpfin = nmap.nmap_fin_scan(host["address"])
             if host["address"] in tcpfin:
                 portList = tcpfin[host["address"]]["ports"]
@@ -55,6 +56,9 @@ def scanPort(port):
                         host.update({"tcp_fin" : tempPort["state"]})
             else:
                 host.update({"tcp_fin" : "closed"})
+
+            tcpxmas = nmaphd.nmap_portscan_only(host["address"], args="-sX")
+            print(tcpxmas)
     
     print(hostResults)
             
