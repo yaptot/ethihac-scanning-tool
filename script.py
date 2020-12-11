@@ -12,6 +12,8 @@ from nmap3.nmap3 import NmapScanTechniques
 startTime = time.time()
 nmap = nmap3.Nmap()
 port = 53
+startHost = None
+endHost = None
 
 hostResults = []
 
@@ -56,6 +58,7 @@ def validateIP(ip):
     return False
     
 def pingSingle(host, port):
+    print("Host: ", host)
     nmap = nmap3.NmapHostDiscovery()
     result = nmap.nmap_no_portscan(host)
 
@@ -64,6 +67,8 @@ def pingSingle(host, port):
         scanPort(port)
 
 def pingRange(startHost, endHost, port):
+    print("Start Host: ", startHost)
+    print("End Host: ", endHost)
     nmap = nmap3.NmapHostDiscovery()
     ipRange = int(ipaddress.IPv4Address(endHost)) - int(ipaddress.IPv4Address(startHost))
     print(ipRange)
@@ -84,13 +89,13 @@ if len(sys.argv) > 1:
         if(sys.argv[sys.argv.index(i)] == '-v'):
             print('version 0.1')
 
-        elif(sys.argv[sys.argv.index(i)] == '-h'):
+        if(sys.argv[sys.argv.index(i)] == '-h'):
             print('sajdasd')
 
-        elif(sys.argv[sys.argv.index(i)] == '-t'):
+        if(sys.argv[sys.argv.index(i)] == '-t'):
             print(time.time() - startTime)
 
-        elif(sys.argv[sys.argv.index(i)] == '-p'):
+        if(sys.argv[sys.argv.index(i)] == '-p'):
             if (sys.argv[sys.argv.index(i) + 1].isnumeric()): 
                 if(int(sys.argv[sys.argv.index(i) + 1]) >= 0 and int(sys.argv[sys.argv.index(i) + 1]) <= 65535):
                     port = int(sys.argv[sys.argv.index(i) + 1])
@@ -99,18 +104,19 @@ if len(sys.argv) > 1:
             else:
                 print("Invalid port number")
         
-        elif(sys.argv[sys.argv.index(i)] == 'host'):
+        if(sys.argv[sys.argv.index(i)] == 'host'):
             if(validateIP(sys.argv[sys.argv.index(i) + 1])):
                 startHost = sys.argv[sys.argv.index(i) + 1]
 
                 if(sys.argv.index(i) + 2 < len(sys.argv)): 
                     if(validateIP(sys.argv[sys.argv.index(i) + 2])):
                         endHost = sys.argv[sys.argv.index(i) + 2]
-                        pingRange(startHost, endHost, port)
-                    else:
-                        pingSingle(startHost, port)
-                else:
-                    pingSingle(startHost, port)
             else:
                 print("Invalid startHost IP address")
+
+if startHost is not None:
+    if endHost is not None:
+        pingRange(startHost, endHost, port)
+    else:
+        pingSingle(startHost, port)
         
