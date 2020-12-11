@@ -40,7 +40,7 @@ def scanPort(port):
                 for tempPort in portList:
                     if tempPort["portid"] == str(port) and tempPort["state"] =="open":
                         print("yay(1)")
-                        host.update({"tcp_syn: open"})
+                        host.update({"tcp_syn" : "open"})
             else:
                 host.update({"tcp_syn": "closed"})
     
