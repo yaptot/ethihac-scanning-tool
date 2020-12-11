@@ -80,7 +80,15 @@ def scanPort(port):
                 host.update({"tcp_null" : "closed"})
 
             tcpack = nmaphd.nmap_portscan_only(host["address"], args="-Pn -p " + str(port))
-            print(tcpack)
+            if host["address"] in tcpack:
+                portList = tcpack[host["address"]]["ports"]
+                host.update({"tcp_null" : "closed"})
+                for tempPort in portList:
+                    if tempPort["portid"] == str(port):
+                        print("yay(4)")
+                        host.update({"tcp_ack" : tempPort["state"]})
+            else:
+                host.update({"tcp_ack" : "closed"})
     
     print(hostResults)
             
