@@ -23,7 +23,7 @@ def scanPort(port):
     nmaphd = NmapHostDiscovery()
 
     for host in hostResults:
-            tcpconn = nmap.nmap_tcp_scan(host["address"])
+            tcpconn = nmap.nmap_tcp_scan(host["address"], args="-Pn")
             if host["address"] in tcpconn:
                 portList = tcpconn[host["address"]]["ports"]
 
@@ -35,7 +35,7 @@ def scanPort(port):
             else:
                 host.update({"tcp_conn": "closed"})
 
-            tcpsyn = nmap.nmap_syn_scan(host["address"])
+            tcpsyn = nmap.nmap_syn_scan(host["address"], args="-Pn")
             if host["address"] in tcpsyn:
                 portList = tcpsyn[host["address"]]["ports"]
                 host.update({"tcp_syn": "closed"})
@@ -46,7 +46,7 @@ def scanPort(port):
             else:
                 host.update({"tcp_syn": "closed"})
 
-            tcpfin = nmap.nmap_fin_scan(host["address"])
+            tcpfin = nmap.nmap_fin_scan(host["address"], args="-Pn")
             if host["address"] in tcpfin:
                 portList = tcpfin[host["address"]]["ports"]
                 host.update({"tcp_fin" : "closed"})
@@ -57,8 +57,7 @@ def scanPort(port):
             else:
                 host.update({"tcp_fin" : "closed"})
 
-            tcpxmas = nmaphd.nmap_portscan_only(host["address"], args="-sX")
-
+            tcpxmas = nmaphd.nmap_portscan_only(host["address"], args="-sX -Pn")
             if host["address"] in tcpxmas:
                 portList = tcpxmas[host["address"]]["ports"]
                 host.update({"tcp_xmas" : "closed"})
@@ -69,7 +68,7 @@ def scanPort(port):
             else:
                 host.update({"tcp_xmas" : "closed"})
 
-            tcpnull = nmaphd.nmap_portscan_only(host["address"], args="-sN")
+            tcpnull = nmaphd.nmap_portscan_only(host["address"], args="-sN -Pn")
             if host["address"] in tcpnull:
                 portList = tcpnull[host["address"]]["ports"]
                 host.update({"tcp_null" : "closed"})
