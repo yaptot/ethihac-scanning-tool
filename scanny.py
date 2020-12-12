@@ -2,9 +2,9 @@ import os
 import sys
 import time
 import ipaddress
-from datetime import datetime
 import nmap3
 import tabulate
+import signal
 
 from nmap3.nmap3 import NmapHostDiscovery, NmapScanTechniques
 
@@ -13,11 +13,12 @@ nmap = nmap3.Nmap()
 port = 53
 startHost = None
 endHost = None
+timecheck = False
 
 hostResults = []
 
 def scanPort(port):
-    print(f'Port Number: {port}')
+    print(f'Target Port: {port}')
     nmap = NmapScanTechniques()
     nmaphd = NmapHostDiscovery()
 
@@ -94,7 +95,6 @@ def scanPort(port):
 #   print(hostResults)
 
 def printTable():
-    print("Target Port: ", port)
     header = ["Address", "ICMP", "CONN", "SYN", "FIN", "Xmas", "Null", "ACK"]
     rows = [i.values() for i in hostResults]
     print(tabulate.tabulate(rows, header, tablefmt="grid"))
@@ -124,7 +124,6 @@ def pingRange(startHost, endHost, port):
     print("End Host: ", endHost)
     nmap = nmap3.NmapHostDiscovery()
     ipRange = int(ipaddress.IPv4Address(endHost)) - int(ipaddress.IPv4Address(startHost))
-    print(ipRange)
     address = ipaddress.IPv4Address(startHost)
     for i in range(ipRange + 1):
         result = nmap.nmap_no_portscan(str(address))
@@ -137,16 +136,42 @@ def pingRange(startHost, endHost, port):
 
     scanPort(port)
 
+def printInfo():
+    print('v1.0')
+    print('scanny.py is a Linux simple network scanning tool created using Python 3 and nmap. It can perform the following scans:')
+    print('- ICMP Scan', '- TCP-Connect Scan', '- TCP SYN Scan', '- TCP FIN Scan', '- Xmas Scan', '- Null Scan', '- TCP ACK Scan', sep="\n", end="\n\n")
+    print('The following are the pre-requisites for running scanny.py:')
+    print('- Python 3', '- Nmap', '- Administrator/Root Privileges', sep="\n", end="\n\n")
+    print('Please install all of the required Python 3 modules using pip3 install -r requirements.txt')
+    print('The requirements.txt file must be in the same folder with the program.')
+
+def printHelp():
+    print('scanny.py Usage:')
+    print('sudo python3 scanny.py host <host IP address> <end host IP address (optional)> -p <port number>')
+    print('Example: sudo python3 scanny.py host 10.10.0.11 10.10.0.12 -p 22')
+    print('Options:')
+    print('-h', 'View help.', sep="\t")
+    print('host', 'Add a host or a range of hosts (can only be used once).  host <host IP Address> <end host IP address (optional)>', sep='\t')
+    print('-p', 'Specify a port number to be scanned. The default port number is 53.  -p <port number>', sep='\t')
+    print('-t', 'Measure the time taken for the program to complete scanning (optional).', sep="\t")
+    print('-v', 'Version/About scanny.py', sep="\t")
+
+def signalHandler(sig, frame):
+    print('Exiting scanny.py')
+    sys.exit(0)
+
+signal.signal(signal.SIGINT, signalHandler)
+
 if len(sys.argv) > 1:
     for i in sys.argv:
         if(sys.argv[sys.argv.index(i)] == '-v'):
-            print('version 0.1')
+            printInfo()
 
         if(sys.argv[sys.argv.index(i)] == '-h'):
-            print('sajdasd')
+            printHelp()
 
         if(sys.argv[sys.argv.index(i)] == '-t'):
-            print(time.time() - startTime)
+            timecheck = True
 
         if(sys.argv[sys.argv.index(i)] == '-p'):
             if (sys.argv[sys.argv.index(i) + 1].isnumeric()): 
@@ -172,4 +197,6 @@ if startHost is not None:
         pingRange(startHost, endHost, port)
     else:
         pingSingle(startHost, port)
-        
+    
+if timecheck:
+    print('Time taken:',time.time() - startTime, 'seconds')
