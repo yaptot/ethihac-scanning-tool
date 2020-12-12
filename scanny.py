@@ -29,7 +29,7 @@ def scanPort(port):
                 host.update({"tcp_conn": "closed"})
                 for tempPort in portList:
                     if tempPort["portid"] == str(port):
-                        print("yay")
+                        #print("yay")
                         host.update({"tcp_conn": tempPort["state"]})
             else:
                 host.update({"tcp_conn": "closed"})
@@ -40,7 +40,7 @@ def scanPort(port):
                 host.update({"tcp_syn": "closed"})
                 for tempPort in portList:
                     if tempPort["portid"] == str(port):
-                        print("yay(1)")
+                        #print("yay(1)")
                         host.update({"tcp_syn" : tempPort["state"]})
             else:
                 host.update({"tcp_syn": "closed"})
@@ -51,7 +51,7 @@ def scanPort(port):
                 host.update({"tcp_fin" : "closed"})
                 for tempPort in portList:
                     if tempPort["portid"] == str(port):
-                        print("yay(2)")
+                        #print("yay(2)")
                         host.update({"tcp_fin" : tempPort["state"]})
             else:
                 host.update({"tcp_fin" : "closed"})
@@ -62,7 +62,7 @@ def scanPort(port):
                 host.update({"tcp_xmas" : "closed"})
                 for tempPort in portList:
                     if tempPort["portid"] == str(port):
-                        print("yay(3)")
+                        #print("yay(3)")
                         host.update({"tcp_xmas" : tempPort["state"]})
             else:
                 host.update({"tcp_xmas" : "closed"})
@@ -73,7 +73,7 @@ def scanPort(port):
                 host.update({"tcp_null" : "closed"})
                 for tempPort in portList:
                     if tempPort["portid"] == str(port):
-                        print("yay(4)")
+                        #print("yay(4)")
                         host.update({"tcp_null" : tempPort["state"]})
             else:
                 host.update({"tcp_null" : "closed"})
@@ -84,10 +84,12 @@ def scanPort(port):
                 host.update({"tcp_ack" : "closed"})
                 for tempPort in portList:
                     if tempPort["portid"] == str(port):
-                        print("yay(5)")
+                        #print("yay(5)")
                         host.update({"tcp_ack" : tempPort["state"]})
             else:
                 host.update({"tcp_ack" : "closed"})
+            
+    printTable()
     
 #   print(hostResults)
 
