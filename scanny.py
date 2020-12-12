@@ -1,11 +1,10 @@
 import os
 import sys
-import subprocess
 import time
 import ipaddress
 from datetime import datetime
 import nmap3
-import json
+import tabulate
 
 from nmap3.nmap3 import NmapHostDiscovery, NmapScanTechniques
 
@@ -90,7 +89,13 @@ def scanPort(port):
             else:
                 host.update({"tcp_ack" : "closed"})
     
-    print(hostResults)
+#   print(hostResults)
+
+def printTable():
+    print("Target Port: ", port)
+    header = ["Address", "ICMP", "CONN", "SYN", "FIN", "Xmas", "Null", "ACK"]
+    rows = [i.values() for i in hostResults]
+    print(tabulate.tabulate(rows, header, tablefmt="grid"))
             
 
 def validateIP(ip):
