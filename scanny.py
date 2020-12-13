@@ -217,9 +217,9 @@ if len(sys.argv) > 1: #Checks the arguments of the command inputted
 
 if startHost is not None:
     if endHost is not None:
-        pingRange(startHost, endHost, port)
+        pingRange()
     else:
-        pingSingle()
+        pingSingle(startHost)
     
 if timecheck:
     print('Time taken:',time.time() - startTime, 'seconds')
