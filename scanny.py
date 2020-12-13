@@ -134,7 +134,7 @@ def pingSingle(host):
 
     if host in result:
         hostResults.append({'address': host, 'state': result[host]["state"]["state"]}) #Stores the host IP Address and its state using ICMP Scan
-        scanPort(port)
+        scanPort()
 
 #   This function performs the ICMP scan of a range of hosts
 #   @params none
@@ -153,7 +153,7 @@ def pingRange():
 
         address += 1
 
-    scanPort(port)
+    scanPort()
 
 #   This function prints the contents of the '-v' argument.
 #   @params none
@@ -219,7 +219,7 @@ if startHost is not None:
     if endHost is not None:
         pingRange(startHost, endHost, port)
     else:
-        pingSingle(startHost, port)
+        pingSingle()
     
 if timecheck:
     print('Time taken:',time.time() - startTime, 'seconds')
