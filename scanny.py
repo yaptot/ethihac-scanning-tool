@@ -106,7 +106,7 @@ def scanPort():
 def printTable():
     "scanny.py".center(24)
     "-------------------".center(24)
-    "Port" + port.center(24)
+    "Port" + str(port).center(24)
     header = ["Address", "ICMP", "CONN", "SYN", "FIN", "Xmas", "Null", "ACK"]
     rows = [i.values() for i in hostResults]
     print(tabulate.tabulate(rows, header, tablefmt="grid"))
