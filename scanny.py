@@ -113,7 +113,7 @@ def validateIP(ip):
 def pingSingle(host, port):
     print("Host: ", host)
     nmap = nmap3.NmapHostDiscovery()
-    result = nmap.nmap_no_portscan(host)
+    result = nmap.nmap_no_portscan(host, args="-PE")
 
     if host in result:
         hostResults.append({'address': host, 'state': result[host]["state"]["state"]})
@@ -126,7 +126,7 @@ def pingRange(startHost, endHost, port):
     ipRange = int(ipaddress.IPv4Address(endHost)) - int(ipaddress.IPv4Address(startHost))
     address = ipaddress.IPv4Address(startHost)
     for i in range(ipRange + 1):
-        result = nmap.nmap_no_portscan(str(address))
+        result = nmap.nmap_no_portscan(str(address), args="-PE")
         if str(address) in result: 
             hostResults.append({'address':str(address), 'state': result[str(address)]["state"]["state"]})
         else:
