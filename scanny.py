@@ -104,9 +104,9 @@ def scanPort():
 #   This function tabulates and prints the results of the host and port scan.
 #   @params none
 def printTable():
-    "scanny.py".center(24)
-    "-------------------".center(24)
-    "Port" + str(port).center(24)
+    print("scanny.py".center(100))
+    print("-------------------".center(100))
+    print(("Port " + str(port)).center(100))
     header = ["Address", "ICMP", "CONN", "SYN", "FIN", "Xmas", "Null", "ACK"]
     rows = [i.values() for i in hostResults]
     print(tabulate.tabulate(rows, header, tablefmt="grid"))
