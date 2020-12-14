@@ -134,7 +134,10 @@ def pingSingle(host):
 
     if host in result:
         hostResults.append({'address': host, 'state': result[host]["state"]["state"]}) #Stores the host IP Address and its state using ICMP Scan
-        scanPort()
+    else:
+        hostResults.append({'address': host, 'state': "down"}) #Stores the host IP Address and its state using ICMP Scan
+    
+    scanPort()
 
 #   This function performs the ICMP scan of a range of hosts
 #   @params none
