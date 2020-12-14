@@ -230,4 +230,4 @@ if startHost is not None:
         pingSingle(startHost)
     
 if timecheck:
-    print('Time taken:',time.time() - startTime, 'seconds')
+    print('Time taken:', round(time.time() - startTime, 3), 'seconds')
