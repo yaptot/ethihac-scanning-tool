@@ -161,14 +161,14 @@ def pingRange():
 #   This function prints the contents of the '-v' argument.
 #   @params none
 def printInfo():
-    print('v1.0 Created by Rupert Myles B. Yap')
+    print('v1.0 created by Rupert Myles B. Yap')
     print('scanny.py is a Linux simple network scanning tool created using Python 3 and nmap. It can perform the following scans:')
     print('- ICMP Scan', '- TCP-Connect Scan', '- TCP SYN Scan', '- TCP FIN Scan', '- Xmas Scan', '- Null Scan', '- TCP ACK Scan', sep="\n", end="\n\n")
 
     print('The following are the pre-requisites for running scanny.py:')
     print('- Python 3', '- Nmap', '- Administrator/Root Privileges', sep="\n", end="\n\n")
 
-    print('Please install all of the required Python 3 modules using pip3 install -r requirements.txt')
+    print('Please install all of the required Python 3 modules using sudo pip3 install -r requirements.txt')
     print('The requirements.txt file must be in the same folder with the program.\n')
 
     print('The github repository can be found in https://github.com/yaptot/ethihac-scanning-tool')
