@@ -34,68 +34,68 @@ def scanPort():
             if host["address"] in tcpconn:
                 portList = tcpconn[host["address"]]["ports"]
 
-                host.update({"tcp_conn": "closed"})
+                host.update({"tcp_conn": "-"})
                 for tempPort in portList:
                     if tempPort["portid"] == str(port): #Checks if the port was scanned
                         #print("yay")
                         host.update({"tcp_conn": tempPort["state"]}) #Stores the status of the port
             else:
-                host.update({"tcp_conn": "closed"})
+                host.update({"tcp_conn": "-"})
 
             tcpsyn = nmap.nmap_syn_scan(host["address"], args="-Pn -p " + str(port)) #Command for SYN scan
             if host["address"] in tcpsyn:
                 portList = tcpsyn[host["address"]]["ports"]
-                host.update({"tcp_syn": "closed"})
+                host.update({"tcp_syn": "-"})
                 for tempPort in portList:
                     if tempPort["portid"] == str(port): #Checks if the port was scanned
                         #print("yay(1)")
                         host.update({"tcp_syn" : tempPort["state"]}) #Stores the status of the port
             else:
-                host.update({"tcp_syn": "closed"})
+                host.update({"tcp_syn": "-"})
 
             tcpfin = nmap.nmap_fin_scan(host["address"], args="-Pn -p " + str(port)) #Command for FIN scan
             if host["address"] in tcpfin:
                 portList = tcpfin[host["address"]]["ports"]
-                host.update({"tcp_fin" : "closed"})
+                host.update({"tcp_fin" : "-"})
                 for tempPort in portList:
                     if tempPort["portid"] == str(port): #Checks if the port was scanned
                         #print("yay(2)")
                         host.update({"tcp_fin" : tempPort["state"]}) #Stores the status of the port
             else:
-                host.update({"tcp_fin" : "closed"})
+                host.update({"tcp_fin" : "-"})
 
             tcpxmas = nmaphd.nmap_portscan_only(host["address"], args="-sX -p " + str(port)) #Command for Xmas scan
             if host["address"] in tcpxmas:
                 portList = tcpxmas[host["address"]]["ports"]
-                host.update({"tcp_xmas" : "closed"})
+                host.update({"tcp_xmas" : "-"})
                 for tempPort in portList:
                     if tempPort["portid"] == str(port): #Checks if the port was scanned
                         #print("yay(3)")
                         host.update({"tcp_xmas" : tempPort["state"]}) #Stores the status of the port
             else:
-                host.update({"tcp_xmas" : "closed"})
+                host.update({"tcp_xmas" : "-"})
 
             tcpnull = nmaphd.nmap_portscan_only(host["address"], args="-sN -p " + str(port)) #Command for Null scan
             if host["address"] in tcpnull:
                 portList = tcpnull[host["address"]]["ports"]
-                host.update({"tcp_null" : "closed"})
+                host.update({"tcp_null" : "-"})
                 for tempPort in portList:
                     if tempPort["portid"] == str(port): #Checks if the port was scanned
                         #print("yay(4)")
                         host.update({"tcp_null" : tempPort["state"]}) #Stores the status of the port
             else:
-                host.update({"tcp_null" : "closed"})
+                host.update({"tcp_null" : "-"})
 
             tcpack = nmaphd.nmap_portscan_only(host["address"], args="-sA -p " + str(port)) #Command for ACK scan
             if host["address"] in tcpack:
                 portList = tcpack[host["address"]]["ports"]
-                host.update({"tcp_ack" : "closed"})
+                host.update({"tcp_ack" : "-"})
                 for tempPort in portList:
                     if tempPort["portid"] == str(port): #Checks if the port was scanned
                         #print("yay(5)")
                         host.update({"tcp_ack" : tempPort["state"]}) #stores the status of the port
             else:
-                host.update({"tcp_ack" : "closed"})
+                host.update({"tcp_ack" : "-"})
             
     printTable()
     
