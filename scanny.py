@@ -161,7 +161,7 @@ def pingRange():
 #   This function prints the contents of the '-v' argument.
 #   @params none
 def printInfo():
-    print('v1.0')
+    print('v1.0 Created by Rupert Myles B. Yap')
     print('scanny.py is a Linux simple network scanning tool created using Python 3 and nmap. It can perform the following scans:')
     print('- ICMP Scan', '- TCP-Connect Scan', '- TCP SYN Scan', '- TCP FIN Scan', '- Xmas Scan', '- Null Scan', '- TCP ACK Scan', sep="\n", end="\n\n")
 
