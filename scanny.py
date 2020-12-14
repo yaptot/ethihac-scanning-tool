@@ -164,7 +164,7 @@ def printInfo():
     print('v1.0')
     print('scanny.py is a Linux simple network scanning tool created using Python 3 and nmap. It can perform the following scans:')
     print('- ICMP Scan', '- TCP-Connect Scan', '- TCP SYN Scan', '- TCP FIN Scan', '- Xmas Scan', '- Null Scan', '- TCP ACK Scan', sep="\n", end="\n\n")
-    
+
     print('The following are the pre-requisites for running scanny.py:')
     print('- Python 3', '- Nmap', '- Administrator/Root Privileges', sep="\n", end="\n\n")
 
@@ -181,10 +181,10 @@ def printHelp():
     print('Example: sudo python3 scanny.py host 10.10.0.11 10.10.0.12 -p 22\n')
 
     print('Options:')
-    print('-h', 'View help.', sep="\t")
-    print('host', 'Add a host or a range of hosts (can only be used once). \n\thost <host IP Address> <end host IP address (optional)>', sep='\t')
-    print('-p', 'Specify a port number to be scanned. The default port number is 53. \n\t-p <port number>', sep='\t')
-    print('-t', 'Measure the time taken for the program to complete scanning (optional).', sep="\t")
+    print('-h', 'View help.', sep="\t", end="\n\n")
+    print('host', 'Add a host or a range of hosts (can only be used once). \n\thost <host IP Address> <end host IP address (optional)>', sep='\t', end="\n\n")
+    print('-p', 'Specify a port number to be scanned. The default port number is 53. \n\t-p <port number>', sep='\t', end="\n\n")
+    print('-t', 'Measure the time taken for the program to complete scanning (optional).', sep="\t", end="\n\n")
     print('-v', 'Version/About scanny.py', sep="\t")
 
 def signalHandler(sig, frame):
